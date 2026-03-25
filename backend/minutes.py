@@ -125,7 +125,13 @@ async def generate_minutes(transcript: str) -> str:
             )
             resp.raise_for_status()
             data = resp.json()
-            return data["choices"][0]["message"]["content"]
+            content = data["choices"][0]["message"]["content"]
+            # Strip Qwen's <think> reasoning tags if present
+            import re
+            content = re.sub(r"<think>.*?</think>\s*", "", content, flags=re.DOTALL)
+            # Also strip "Thinking Process:" preamble that leaks without tags
+            content = re.sub(r"^Thinking Process:.*?(?=^#|\Z)", "", content, flags=re.DOTALL | re.MULTILINE)
+            return content.strip()
         except httpx.ConnectError:
             logger.warning("Could not reach Qwen through tunnel")
             return "*(Minutes generation unavailable — Qwen not reachable through tunnel)*\n\nRaw transcript attached above."
