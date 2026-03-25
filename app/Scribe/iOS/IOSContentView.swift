@@ -1,0 +1,149 @@
+import SwiftUI
+
+#if os(iOS)
+struct IOSContentView: View {
+    @Bindable var vm: ScribeViewModel
+    @State private var showingFilePicker = false
+
+    var body: some View {
+        NavigationStack {
+            Group {
+                if vm.isProcessing {
+                    progressView
+                } else if vm.hasResults {
+                    resultsView
+                } else {
+                    landingView
+                }
+            }
+            .navigationTitle("Scribe")
+            .toolbar {
+                if vm.hasResults {
+                    ToolbarItem(placement: .primaryAction) {
+                        Button("New") { vm.reset() }
+                    }
+                    ToolbarItem(placement: .secondaryAction) {
+                        ShareLink(item: vm.exportContent)
+                    }
+                }
+            }
+            .task { await vm.checkBackend() }
+        }
+    }
+
+    // MARK: - Landing
+
+    private var landingView: some View {
+        VStack(spacing: 24) {
+            Spacer()
+
+            Image(systemName: "waveform.badge.mic")
+                .font(.system(size: 56))
+                .foregroundStyle(.secondary)
+
+            Text("Transcribe audio & video")
+                .font(.title2)
+                .fontWeight(.medium)
+
+            Picker("Mode", selection: $vm.mode) {
+                ForEach(ProcessingMode.allCases, id: \.self) { m in
+                    Text(m.rawValue).tag(m)
+                }
+            }
+            .pickerStyle(.segmented)
+            .padding(.horizontal, 40)
+
+            Button(action: { showingFilePicker = true }) {
+                Label("Select File", systemImage: "doc.badge.plus")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .padding(.horizontal, 40)
+
+            if !vm.backendReady {
+                Label("Backend unreachable — check Tailscale", systemImage: "exclamationmark.triangle")
+                    .font(.caption)
+                    .foregroundStyle(.orange)
+            }
+
+            if let error = vm.errorMessage {
+                Text(error)
+                    .font(.caption)
+                    .foregroundStyle(.red)
+                    .padding(.horizontal)
+            }
+
+            Spacer()
+        }
+        .fileImporter(
+            isPresented: $showingFilePicker,
+            allowedContentTypes: [.audio, .movie, .mpeg4Movie, .mp3, .wav],
+            allowsMultipleSelection: false
+        ) { result in
+            if case .success(let urls) = result, let url = urls.first {
+                guard url.startAccessingSecurityScopedResource() else { return }
+                Task {
+                    await vm.processFile(url)
+                    url.stopAccessingSecurityScopedResource()
+                }
+            }
+        }
+    }
+
+    // MARK: - Progress
+
+    private var progressView: some View {
+        VStack(spacing: 16) {
+            Spacer()
+            ProgressView()
+                .controlSize(.large)
+            Text(vm.processingStatus)
+                .font(.headline)
+            Text(vm.fileName)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            Spacer()
+        }
+    }
+
+    // MARK: - Results
+
+    private var resultsView: some View {
+        TabView {
+            ScrollView {
+                Text(vm.transcript)
+                    .font(.system(.caption, design: .monospaced))
+                    .textSelection(.enabled)
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .tabItem { Label("Transcript", systemImage: "text.alignleft") }
+
+            if !vm.minutes.isEmpty {
+                ScrollView {
+                    Text(vm.minutes)
+                        .textSelection(.enabled)
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .tabItem { Label("Minutes", systemImage: "doc.text") }
+            }
+        }
+        .safeAreaInset(edge: .top) {
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(vm.fileName).font(.caption).fontWeight(.medium)
+                    Text(vm.formattedDuration).font(.caption2).foregroundStyle(.secondary)
+                }
+                Spacer()
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 6)
+            .background(.ultraThinMaterial)
+        }
+    }
+}
+#endif

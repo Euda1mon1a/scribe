@@ -1,57 +1,18 @@
 import Foundation
 
-struct TranscribeResponse: Codable {
-    let text: String
-    let sentences: [SentenceResponse]
-    let durationSeconds: Double
-    let format: String
-    let formattedOutput: String
-
-    enum CodingKeys: String, CodingKey {
-        case text
-        case sentences
-        case durationSeconds = "duration_seconds"
-        case format
-        case formattedOutput = "formatted_output"
-    }
-}
-
-struct SentenceResponse: Codable, Identifiable {
-    var id: Double { start }
-    let text: String
-    let start: Double
-    let end: Double
-    let confidence: Double
-}
-
-struct MinutesResponse: Codable {
-    let transcript: String
-    let minutes: String
-    let durationSeconds: Double
-
-    enum CodingKeys: String, CodingKey {
-        case transcript
-        case minutes
-        case durationSeconds = "duration_seconds"
-    }
-}
-
-struct HealthResponse: Codable {
-    let status: String
-    let modelLoaded: Bool
-    let modelName: String?
-
-    enum CodingKeys: String, CodingKey {
-        case status
-        case modelLoaded = "model_loaded"
-        case modelName = "model_name"
-    }
-}
-
 final class APIClient: Sendable {
     static let shared = APIClient()
-    private let baseURL = "http://127.0.0.1:8890"
     private init() {}
+
+    private var baseURL: String {
+        #if os(iOS)
+        return UserDefaults.standard.string(forKey: "scribeBackendURL")
+            ?? "http://100.69.127.98:8890"
+        #else
+        return UserDefaults.standard.string(forKey: "scribeBackendURL")
+            ?? "http://127.0.0.1:8890"
+        #endif
+    }
 
     func checkHealth() async throws -> HealthResponse {
         let url = URL(string: "\(baseURL)/health")!
@@ -96,17 +57,5 @@ final class APIClient: Sendable {
 
         request.httpBody = body
         return try await URLSession.shared.data(for: request)
-    }
-}
-
-enum ScribeError: LocalizedError {
-    case serverError(String)
-    case backendNotRunning
-
-    var errorDescription: String? {
-        switch self {
-        case .serverError(let msg): return "Server error: \(msg)"
-        case .backendNotRunning: return "Scribe backend not running on port 8890. Start it with: python3 -m backend.main"
-        }
     }
 }
