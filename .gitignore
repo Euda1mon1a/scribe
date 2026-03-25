@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+dist/
+build/
+.DS_Store
+*.wav
+*.mp3
+*.mp4
+app/Scribe.xcodeproj/xcuserdata/
+app/Scribe.xcodeproj/project.xcworkspace/xcuserdata/

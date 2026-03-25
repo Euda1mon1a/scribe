@@ -1,0 +1,20 @@
+[project]
+name = "scribe"
+version = "0.1.0"
+description = "Local transcription and meeting minutes — macOS native app + MCP server"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.34.0",
+    "parakeet-mlx>=0.5.1",
+    "httpx>=0.28.0",
+    "python-multipart>=0.0.18",
+]
+
+[project.scripts]
+scribe = "backend.main:cli"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.0",
+]
