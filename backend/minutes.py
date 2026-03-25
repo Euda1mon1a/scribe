@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 QWEN_LOCAL_PORT = 18080
 QWEN_URL = f"http://127.0.0.1:{QWEN_LOCAL_PORT}/v1/chat/completions"
 QWEN_MODEL = "mlx-community/Qwen3.5-35B-A3B-4bit"
+RAG_URL = "http://100.69.127.98:8085"  # Mini RAG MCP server
 TIMEOUT = 300.0
 
 _tunnel_proc: subprocess.Popen | None = None
@@ -56,9 +57,30 @@ def _ensure_tunnel() -> bool:
         return False
 
 
+async def _query_rag(query: str) -> str:
+    """Query Mini RAG for context (names, roles, program info). Returns empty string on failure."""
+    try:
+        async with httpx.AsyncClient(timeout=10) as client:
+            resp = await client.post(
+                RAG_URL,
+                json={
+                    "jsonrpc": "2.0", "id": 1, "method": "tools/call",
+                    "params": {"name": "rag_search", "arguments": {"query": query, "top_k": 5}},
+                },
+            )
+            if resp.status_code == 200:
+                data = resp.json()
+                content = data.get("result", {}).get("content", [])
+                if content:
+                    return content[0].get("text", "")
+    except Exception:
+        logger.debug("RAG query failed (non-critical), proceeding without context")
+    return ""
+
+
 MINUTES_PROMPT = """You are an expert meeting-minutes writer. Given the transcript below, produce structured meeting minutes in Markdown.
 
-Include:
+{rag_context}Include:
 - **Date / Location** (infer from context if possible)
 - **Attendees** (names and roles mentioned)
 - **Summary** (2-3 sentence overview)
@@ -67,7 +89,7 @@ Include:
 - **Action Items** (task, owner, deadline if mentioned)
 - **Next Steps / Follow-ups**
 
-Be concise. Attribute statements to speakers where the transcript makes it clear. Do not fabricate information not present in the transcript.
+Be concise. Attribute statements to speakers where the transcript makes it clear. Use the reference information above to correct name spellings and identify roles. Do not fabricate information not present in the transcript.
 
 ---
 TRANSCRIPT:
@@ -81,7 +103,14 @@ async def generate_minutes(transcript: str) -> str:
     if not _ensure_tunnel():
         return "*(Minutes generation unavailable — cannot establish SSH tunnel to Mini)*\n\nRaw transcript attached above."
 
-    prompt = MINUTES_PROMPT.format(transcript=transcript)
+    # Query RAG for program roster / name context
+    rag_text = await _query_rag("family medicine residency faculty residents roster names roles")
+    rag_context = ""
+    if rag_text:
+        rag_context = f"**Reference information (use to correct name spellings and identify roles):**\n{rag_text}\n\n"
+        logger.info("RAG context injected (%d chars)", len(rag_text))
+
+    prompt = MINUTES_PROMPT.format(transcript=transcript, rag_context=rag_context)
 
     async with httpx.AsyncClient(timeout=TIMEOUT) as client:
         try:

@@ -14,6 +14,8 @@ from backend.minutes import generate_minutes
 from backend.models import HealthResponse, MinutesResult, OutputFormat, TranscribeResult
 from backend.transcriber import engine
 
+OUTPUT_DIR = Path.home() / "Documents" / "scribe-output"
+
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
 
@@ -33,6 +35,25 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+def _persist_output(source_name: str, transcript: str, minutes: str = "", duration: float = 0) -> Path:
+    """Save output to ~/Documents/scribe-output/ for LLM access."""
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    stem = Path(source_name).stem
+    out_path = OUTPUT_DIR / f"{stem}-minutes.md"
+    content = f"# Scribe Output: {source_name}\n\n"
+    content += f"**Duration:** {int(duration // 60)}m {int(duration % 60)}s\n\n"
+    if minutes:
+        content += f"## Minutes\n\n{minutes}\n\n---\n\n"
+    content += f"## Transcript\n\n{transcript}\n"
+    out_path.write_text(content, encoding="utf-8")
+    # Also write a "latest" symlink
+    latest = OUTPUT_DIR / "latest.md"
+    latest.unlink(missing_ok=True)
+    latest.symlink_to(out_path)
+    logger.info("Output saved: %s", out_path)
+    return out_path
 
 
 def _save_upload(upload: UploadFile) -> Path:
@@ -59,7 +80,9 @@ async def transcribe(
 ):
     tmp_path = _save_upload(file)
     try:
-        return engine.transcribe(tmp_path, fmt=format)
+        result = engine.transcribe(tmp_path, fmt=format)
+        _persist_output(file.filename or "untitled", result.text, duration=result.duration_seconds)
+        return result
     finally:
         tmp_path.unlink(missing_ok=True)
 
@@ -82,6 +105,7 @@ async def minutes(file: UploadFile = File(...)):
     try:
         result = engine.transcribe(tmp_path, fmt=OutputFormat.txt)
         mins = await generate_minutes(result.text)
+        _persist_output(file.filename or "untitled", result.text, mins, result.duration_seconds)
         return MinutesResult(
             transcript=result.text,
             minutes=mins,
@@ -89,6 +113,24 @@ async def minutes(file: UploadFile = File(...)):
         )
     finally:
         tmp_path.unlink(missing_ok=True)
+
+
+@app.get("/output/latest")
+async def get_latest_output():
+    """Get the latest transcription/minutes output (for LLMs to read)."""
+    latest = OUTPUT_DIR / "latest.md"
+    if not latest.exists():
+        return PlainTextResponse("No output yet", status_code=404)
+    return PlainTextResponse(latest.read_text(encoding="utf-8"))
+
+
+@app.get("/output/list")
+async def list_outputs():
+    """List all saved outputs."""
+    if not OUTPUT_DIR.exists():
+        return {"outputs": []}
+    files = sorted(OUTPUT_DIR.glob("*-minutes.md"), key=lambda f: f.stat().st_mtime, reverse=True)
+    return {"outputs": [{"name": f.name, "path": str(f), "size": f.stat().st_size} for f in files]}
 
 
 @app.post("/minutes/path", response_model=MinutesResult)
@@ -101,6 +143,7 @@ async def minutes_path(
         return PlainTextResponse(f"File not found: {path}", status_code=404)
     result = engine.transcribe(file_path, fmt=OutputFormat.txt)
     mins = await generate_minutes(result.text)
+    _persist_output(file_path.name, result.text, mins, result.duration_seconds)
     return MinutesResult(
         transcript=result.text,
         minutes=mins,
@@ -125,13 +168,21 @@ MCP_TOOLS = [
     },
     {
         "name": "generate_minutes",
-        "description": "Transcribe an audio/video file and generate structured meeting minutes using local LLM (Qwen on Mini).",
+        "description": "Transcribe an audio/video file and generate structured meeting minutes using local LLM (Qwen on Mini). Uses RAG for name/role correction.",
         "inputSchema": {
             "type": "object",
             "properties": {
                 "path": {"type": "string", "description": "Absolute path to the audio/video file"},
             },
             "required": ["path"],
+        },
+    },
+    {
+        "name": "get_latest_output",
+        "description": "Get the latest transcription/minutes output as markdown. Use this to read results after transcription completes.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {},
         },
     },
 ]
@@ -174,7 +225,14 @@ async def mcp_handler(request: dict):
                 return _mcp_error(req_id, f"File not found: {args['path']}")
             result = engine.transcribe(file_path, fmt=OutputFormat.txt)
             mins = await generate_minutes(result.text)
+            _persist_output(file_path.name, result.text, mins, result.duration_seconds)
             return _mcp_result(req_id, f"# Transcript\n\n{result.text}\n\n---\n\n# Minutes\n\n{mins}")
+
+        if tool_name == "get_latest_output":
+            latest = OUTPUT_DIR / "latest.md"
+            if not latest.exists():
+                return _mcp_error(req_id, "No output yet — transcribe a file first")
+            return _mcp_result(req_id, latest.read_text(encoding="utf-8"))
 
         return _mcp_error(req_id, f"Unknown tool: {tool_name}")
 
