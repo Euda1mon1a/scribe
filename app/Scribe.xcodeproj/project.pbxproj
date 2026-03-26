@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		031688E13720DD5EFCAE50BC /* IOSContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC079990DDA17586238E0C43 /* IOSContentView.swift */; };
+		04175C67303C4FA0F09B8420 /* MacRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD3806384A57F5AEFE22672 /* MacRecorderView.swift */; };
 		136092638E3E35EBF5AE8069 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0960E0D6804A0EAF608464D7 /* Models.swift */; };
 		1CE62D5260F917916FDBAF4E /* RecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A59DAF3BBD74EF67BBFAD /* RecorderView.swift */; };
 		22824D274F3634042207855F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0960E0D6804A0EAF608464D7 /* Models.swift */; };
@@ -24,6 +25,7 @@
 		E3B5BAEA7A3C3EA6A8D61E17 /* ScribeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0F13A2B885D81D29BD8A99 /* ScribeViewModel.swift */; };
 		EEE0D2747B018E771AE67A26 /* ScribeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CB55F742FC802082AE2041 /* ScribeApp.swift */; };
 		F06186F122FBE52DD055464C /* IOSContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC079990DDA17586238E0C43 /* IOSContentView.swift */; };
+		F4A42A174714913062547D05 /* MacRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD3806384A57F5AEFE22672 /* MacRecorderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,10 +48,11 @@
 		5E663062C019F8AC1FAFAF07 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D0F13A2B885D81D29BD8A99 /* ScribeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScribeViewModel.swift; sourceTree = "<group>"; };
 		AC079990DDA17586238E0C43 /* IOSContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSContentView.swift; sourceTree = "<group>"; };
+		AFD3806384A57F5AEFE22672 /* MacRecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacRecorderView.swift; sourceTree = "<group>"; };
 		C43B9C187E345C6237DE57D9 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		D3FBCB7BBC5A2E7DDB00750C /* macOSContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOSContentView.swift; sourceTree = "<group>"; };
 		DE246E28133B04B7C135A5A9 /* ScribeShare.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = ScribeShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		EF5D9EE281DE7498F40A1807 /* Scribe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF5D9EE281DE7498F40A1807 /* Scribe.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Scribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3CB55F742FC802082AE2041 /* ScribeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScribeApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -78,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				D3FBCB7BBC5A2E7DDB00750C /* macOSContentView.swift */,
+				AFD3806384A57F5AEFE22672 /* MacRecorderView.swift */,
 			);
 			name = macOS;
 			path = Scribe/macOS;
@@ -194,6 +198,9 @@
 					52E3B6E2DB0D570FC67E4326 = {
 						DevelopmentTeam = "";
 					};
+					59041964DF6CD642B292FC72 = {
+						DevelopmentTeam = "";
+					};
 					F29FE6AD005808958C6B35AD = {
 						DevelopmentTeam = "";
 					};
@@ -254,6 +261,7 @@
 			files = (
 				7F3D08EB41100BB37BFE75B4 /* APIClient.swift in Sources */,
 				F06186F122FBE52DD055464C /* IOSContentView.swift in Sources */,
+				F4A42A174714913062547D05 /* MacRecorderView.swift in Sources */,
 				22824D274F3634042207855F /* Models.swift in Sources */,
 				1CE62D5260F917916FDBAF4E /* RecorderView.swift in Sources */,
 				7D8CB6A179C8F1DE98727BFD /* ScribeApp.swift in Sources */,
@@ -268,6 +276,7 @@
 			files = (
 				C5CE74B92AF5A405A08B15A1 /* APIClient.swift in Sources */,
 				031688E13720DD5EFCAE50BC /* IOSContentView.swift in Sources */,
+				04175C67303C4FA0F09B8420 /* MacRecorderView.swift in Sources */,
 				136092638E3E35EBF5AE8069 /* Models.swift in Sources */,
 				456D5790755D88DD4D8B9C69 /* RecorderView.swift in Sources */,
 				EEE0D2747B018E771AE67A26 /* ScribeApp.swift in Sources */,
@@ -327,7 +336,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Scribe/Scribe.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = ST6C8ZLY3C;
 				INFOPLIST_FILE = Scribe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -393,7 +401,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -451,7 +459,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
-				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -467,7 +475,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Scribe/Scribe.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = ST6C8ZLY3C;
 				INFOPLIST_FILE = Scribe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

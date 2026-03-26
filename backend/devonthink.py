@@ -2,22 +2,28 @@
 from __future__ import annotations
 
 import logging
+import os
 import subprocess
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
 
-# Target group UUID for Meeting Minutes in DEVONthink
-MEETING_MINUTES_GROUP = "88207AFC-8A12-42E8-8552-8DE5D99FF516"
+# Target group UUID in DEVONthink (set via env or pass per-call)
+DEFAULT_GROUP_UUID = os.environ.get("SCRIBE_DEVONTHINK_GROUP", "")
 
 
 def save_to_devonthink(
     title: str,
     content: str,
     tags: list[str] | None = None,
-    group_uuid: str = MEETING_MINUTES_GROUP,
+    group_uuid: str = "",
 ) -> bool:
-    """Save markdown content to DEVONthink via AppleScript. Returns True on success."""
+    """Save markdown content to DEVONthink via AppleScript. Returns True on success.
+
+    Set SCRIBE_DEVONTHINK_GROUP env var to your target group UUID,
+    or pass group_uuid directly. If neither is set, saves to the global inbox.
+    """
+    uuid = group_uuid or DEFAULT_GROUP_UUID
     if tags is None:
         tags = ["minutes", "scribe"]
 
@@ -29,14 +35,23 @@ def save_to_devonthink(
     escaped_name = record_name.replace('"', '\\"')
     tag_list = ", ".join(f'"{t}"' for t in tags)
 
-    script = f'''
-    tell application "DEVONthink 3"
-        set theGroup to get record with uuid "{group_uuid}"
-        set theRecord to create record with {{name:"{escaped_name}", type:markdown, plain text:"{escaped_content}"}} in theGroup
-        set tags of theRecord to {{{tag_list}}}
-        return uuid of theRecord
-    end tell
-    '''
+    if uuid:
+        script = f'''
+        tell application "DEVONthink"
+            set theGroup to get record with uuid "{uuid}"
+            set theRecord to create record with {{name:"{escaped_name}", type:markdown, plain text:"{escaped_content}"}} in theGroup
+            set tags of theRecord to {{{tag_list}}}
+            return uuid of theRecord
+        end tell
+        '''
+    else:
+        script = f'''
+        tell application "DEVONthink"
+            set theRecord to create record with {{name:"{escaped_name}", type:markdown, plain text:"{escaped_content}"}} in incoming group of database 1
+            set tags of theRecord to {{{tag_list}}}
+            return uuid of theRecord
+        end tell
+        '''
 
     try:
         result = subprocess.run(

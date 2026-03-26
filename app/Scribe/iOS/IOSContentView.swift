@@ -97,7 +97,7 @@ struct IOSContentView: View {
             .padding(.horizontal, 40)
 
             if !vm.backendReady {
-                Label("Backend unreachable — check Tailscale", systemImage: "exclamationmark.triangle")
+                Label("Backend unreachable — check connection", systemImage: "exclamationmark.triangle")
                     .font(.caption)
                     .foregroundStyle(.orange)
             }

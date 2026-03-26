@@ -5,13 +5,10 @@ final class APIClient: Sendable {
     private init() {}
 
     private var baseURL: String {
-        #if os(iOS)
-        return UserDefaults.standard.string(forKey: "scribeBackendURL")
-            ?? "http://100.69.127.98:8890"
-        #else
+        // Override via UserDefaults key "scribeBackendURL" or Settings
+        // iOS defaults to localhost — set to your server's IP if running remotely
         return UserDefaults.standard.string(forKey: "scribeBackendURL")
             ?? "http://127.0.0.1:8890"
-        #endif
     }
 
     func checkHealth() async throws -> HealthResponse {
@@ -36,6 +33,41 @@ final class APIClient: Sendable {
             throw ScribeError.serverError(String(data: data, encoding: .utf8) ?? "Unknown error")
         }
         return try JSONDecoder().decode(MinutesResponse.self, from: data)
+    }
+
+    func batchMinutes(fileURLs: [URL]) async throws -> BatchResponse {
+        let url = URL(string: "\(baseURL)/batch/minutes")!
+        let boundary = UUID().uuidString
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        request.timeoutInterval = 1800 // 30 min for large batches
+
+        var body = Data()
+        for fileURL in fileURLs {
+            let fileData = try Data(contentsOf: fileURL)
+            let fileName = fileURL.lastPathComponent
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"files\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: application/octet-stream\r\n\r\n".data(using: .utf8)!)
+            body.append(fileData)
+            body.append("\r\n".data(using: .utf8)!)
+        }
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+
+        request.httpBody = body
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
+            throw ScribeError.serverError(String(data: data, encoding: .utf8) ?? "Batch failed")
+        }
+        return try JSONDecoder().decode(BatchResponse.self, from: data)
+    }
+
+    func listOutputs() async throws -> [OutputEntry] {
+        let url = URL(string: "\(baseURL)/output/list")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        let response = try JSONDecoder().decode(OutputListResponse.self, from: data)
+        return response.outputs
     }
 
     func exportToDevonThink(title: String, content: String) async throws -> Bool {

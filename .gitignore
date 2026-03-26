@@ -1,12 +1,30 @@
+# Python
 __pycache__/
 *.pyc
 .venv/
 *.egg-info/
 dist/
 build/
+
+# macOS
 .DS_Store
+
+# Audio/video test files
 *.wav
 *.mp3
 *.mp4
+*.m4a
+*.mkv
+*.mov
+
+# Xcode
 app/Scribe.xcodeproj/xcuserdata/
 app/Scribe.xcodeproj/project.xcworkspace/xcuserdata/
+app/.build/
+DerivedData/
+
+# Output
+scribe-output/
+
+# Environment
+.env

@@ -26,6 +26,37 @@ struct ScribeApp: App {
                     openFile()
                 }
                 .keyboardShortcut("o", modifiers: .command)
+
+                Button("Open Multiple Files...") {
+                    openBatch()
+                }
+                .keyboardShortcut("o", modifiers: [.command, .shift])
+            }
+            CommandGroup(after: .saveItem) {
+                Button("Save Output...") {
+                    saveOutput()
+                }
+                .keyboardShortcut("s", modifiers: .command)
+                .disabled(!viewModel.hasResults)
+
+                Button("Export to DEVONthink") {
+                    exportToDevonThink()
+                }
+                .keyboardShortcut("e", modifiers: .command)
+                .disabled(!viewModel.hasResults)
+
+                Divider()
+
+                Button("Copy Minutes") {
+                    copyMinutes()
+                }
+                .keyboardShortcut("c", modifiers: [.command, .shift])
+                .disabled(viewModel.minutes.isEmpty)
+
+                Button("New Transcription") {
+                    viewModel.reset()
+                }
+                .keyboardShortcut("n", modifiers: .command)
             }
         }
         #endif
@@ -44,6 +75,45 @@ struct ScribeApp: App {
                 await viewModel.processFile(url)
             }
         }
+    }
+
+    private func openBatch() {
+        let panel = NSOpenPanel()
+        panel.allowedContentTypes = [.audio, .audiovisualContent]
+        panel.allowsMultipleSelection = true
+        panel.canChooseDirectories = false
+        panel.message = "Select multiple audio/video files for batch processing"
+        panel.begin { response in
+            guard response == .OK, !panel.urls.isEmpty else { return }
+            Task {
+                await viewModel.processBatch(panel.urls)
+            }
+        }
+    }
+
+    private func saveOutput() {
+        let panel = NSSavePanel()
+        panel.allowedContentTypes = [.plainText]
+        let stem = viewModel.fileName.replacingOccurrences(of: ".", with: "-")
+        panel.nameFieldStringValue = "\(stem)-minutes.md"
+        panel.begin { response in
+            guard response == .OK, let url = panel.url else { return }
+            try? viewModel.exportContent.write(to: url, atomically: true, encoding: .utf8)
+        }
+    }
+
+    private func exportToDevonThink() {
+        Task {
+            _ = try? await APIClient.shared.exportToDevonThink(
+                title: viewModel.fileName,
+                content: viewModel.exportContent
+            )
+        }
+    }
+
+    private func copyMinutes() {
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(viewModel.minutes, forType: .string)
     }
     #endif
 

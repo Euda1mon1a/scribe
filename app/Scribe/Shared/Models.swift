@@ -33,6 +33,39 @@ struct MinutesResponse: Codable {
     }
 }
 
+struct BatchItemResponse: Codable, Identifiable {
+    var id: String { filename }
+    let filename: String
+    let transcript: String
+    let minutes: String
+    let durationSeconds: Double
+    let status: String
+    let error: String?
+
+    enum CodingKeys: String, CodingKey {
+        case filename, transcript, minutes, status, error
+        case durationSeconds = "duration_seconds"
+    }
+}
+
+struct BatchResponse: Codable {
+    let total: Int
+    let completed: Int
+    let failed: Int
+    let items: [BatchItemResponse]
+}
+
+struct OutputEntry: Codable, Identifiable {
+    var id: String { name }
+    let name: String
+    let path: String
+    let size: Int
+}
+
+struct OutputListResponse: Codable {
+    let outputs: [OutputEntry]
+}
+
 struct HealthResponse: Codable {
     let status: String
     let modelLoaded: Bool

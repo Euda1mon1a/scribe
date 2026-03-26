@@ -1,5 +1,8 @@
 import Foundation
 import SwiftUI
+#if os(macOS)
+import UserNotifications
+#endif
 
 enum ProcessingMode: String, CaseIterable {
     case transcribe = "Transcript Only"
@@ -20,12 +23,24 @@ final class ScribeViewModel {
     var backendReady = false
     var fileName = ""
 
-    var hasResults: Bool { !transcript.isEmpty }
+    // Batch
+    var batchItems: [BatchItemResponse] = []
+    var batchProgress: Int = 0
+    var batchTotal: Int = 0
+
+    // Recent outputs
+    var recentOutputs: [OutputEntry] = []
+
+    var hasResults: Bool { !transcript.isEmpty || !batchItems.isEmpty }
+    var isBatchResult: Bool { !batchItems.isEmpty }
 
     func checkBackend() async {
         do {
             let health = try await APIClient.shared.checkHealth()
             backendReady = health.modelLoaded
+            if backendReady {
+                await loadRecentOutputs()
+            }
         } catch {
             backendReady = false
         }
@@ -34,6 +49,7 @@ final class ScribeViewModel {
     func processFile(_ url: URL) async {
         errorMessage = nil
         isProcessing = true
+        batchItems = []
         fileName = url.lastPathComponent
 
         do {
@@ -51,10 +67,55 @@ final class ScribeViewModel {
                 minutes = result.minutes
                 duration = result.durationSeconds
             }
+            await loadRecentOutputs()
+            postNotification(title: "Minutes Ready", body: fileName)
         } catch {
             errorMessage = error.localizedDescription
+            postNotification(title: "Processing Failed", body: fileName)
         }
         isProcessing = false
+    }
+
+    func processBatch(_ urls: [URL]) async {
+        guard !urls.isEmpty else { return }
+        errorMessage = nil
+        isProcessing = true
+        batchItems = []
+        transcript = ""
+        minutes = ""
+        batchTotal = urls.count
+        batchProgress = 0
+        fileName = "\(urls.count) files"
+        processingStatus = "Processing \(urls.count) files..."
+
+        do {
+            let result = try await APIClient.shared.batchMinutes(fileURLs: urls)
+            batchItems = result.items
+            // Show combined transcript/minutes from first successful item
+            if let first = result.items.first(where: { $0.status == "ok" }) {
+                transcript = first.transcript
+                minutes = first.minutes
+                duration = result.items.filter { $0.status == "ok" }
+                    .reduce(0) { $0 + $1.durationSeconds }
+            }
+            await loadRecentOutputs()
+            postNotification(
+                title: "Batch Complete",
+                body: "\(result.completed)/\(result.total) files processed"
+            )
+        } catch {
+            errorMessage = error.localizedDescription
+            postNotification(title: "Batch Failed", body: error.localizedDescription)
+        }
+        isProcessing = false
+    }
+
+    func loadRecentOutputs() async {
+        do {
+            recentOutputs = try await APIClient.shared.listOutputs()
+        } catch {
+            recentOutputs = []
+        }
     }
 
     func reset() {
@@ -63,6 +124,9 @@ final class ScribeViewModel {
         duration = 0
         fileName = ""
         errorMessage = nil
+        batchItems = []
+        batchProgress = 0
+        batchTotal = 0
     }
 
     var formattedDuration: String {
@@ -73,9 +137,33 @@ final class ScribeViewModel {
     }
 
     var exportContent: String {
+        if isBatchResult {
+            return batchItems.filter { $0.status == "ok" }.map { item in
+                "# \(item.filename)\n\n## Minutes\n\n\(item.minutes)\n\n## Transcript\n\n\(item.transcript)"
+            }.joined(separator: "\n\n---\n\n")
+        }
         if minutes.isEmpty {
             return transcript
         }
         return "# Minutes\n\n\(minutes)\n\n---\n\n# Transcript\n\n\(transcript)"
+    }
+
+    // MARK: - Notifications
+
+    private func postNotification(title: String, body: String) {
+        #if os(macOS)
+        let center = UNUserNotificationCenter.current()
+        center.requestAuthorization(options: [.alert, .sound]) { _, _ in }
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = .default
+        let request = UNNotificationRequest(
+            identifier: UUID().uuidString,
+            content: content,
+            trigger: nil
+        )
+        center.add(request)
+        #endif
     }
 }

@@ -1,8 +1,20 @@
 [project]
-name = "scribe"
+name = "scribe-minutes"
 version = "0.1.0"
-description = "Local transcription and meeting minutes — macOS native app + MCP server"
+description = "Local, privacy-preserving meeting transcription and minutes generation for macOS. Parakeet TDT for speech-to-text, any OpenAI-compatible LLM for minutes."
 requires-python = ">=3.12"
+license = "MIT"
+readme = "README.md"
+keywords = ["transcription", "meeting-minutes", "speech-to-text", "mlx", "parakeet", "mcp"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: MacOS X",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+]
 dependencies = [
     "fastapi>=0.115.0",
     "uvicorn[standard]>=0.34.0",
@@ -11,8 +23,19 @@ dependencies = [
     "python-multipart>=0.0.18",
 ]
 
+[project.urls]
+Homepage = "https://github.com/Euda1mon1a/scribe"
+Repository = "https://github.com/Euda1mon1a/scribe"
+
 [project.scripts]
 scribe = "backend.main:cli"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["backend"]
 
 [tool.uv]
 dev-dependencies = [
