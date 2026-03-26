@@ -52,6 +52,16 @@ xcodegen generate
 xcodebuild -project Scribe.xcodeproj -scheme Scribe_macOS -destination 'platform=macOS' build
 ```
 
+### iOS App
+
+The repo includes an iOS target with recording, file import, and a share extension. To build it:
+
+1. Open `app/project.yml` and set `DEVELOPMENT_TEAM` to your Apple Developer team ID
+2. Update the bundle ID prefix (`bundleIdPrefix`) if needed
+3. Build the `Scribe_iOS` scheme in Xcode
+
+The iOS app points to `localhost:8890` by default — set the `scribeBackendURL` UserDefaults key to your server's IP if the backend runs on a different machine.
+
 ## Configuration
 
 All configuration is via environment variables. None are required — the backend works out of the box for transcription. Minutes generation needs an LLM.
