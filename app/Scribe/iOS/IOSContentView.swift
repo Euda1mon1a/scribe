@@ -3,45 +3,78 @@ import SwiftUI
 #if os(iOS)
 struct IOSContentView: View {
     @Bindable var vm: ScribeViewModel
-    @State private var showingFilePicker = false
+    @State private var selectedTab = 0
 
     var body: some View {
-        NavigationStack {
-            Group {
-                if vm.isProcessing {
-                    progressView
-                } else if vm.hasResults {
-                    resultsView
-                } else {
-                    landingView
-                }
-            }
-            .navigationTitle("Scribe")
-            .toolbar {
-                if vm.hasResults {
-                    ToolbarItem(placement: .primaryAction) {
-                        Button("New") { vm.reset() }
-                    }
-                    ToolbarItem(placement: .secondaryAction) {
-                        ShareLink(item: vm.exportContent)
+        TabView(selection: $selectedTab) {
+            // Tab 1: Record
+            NavigationStack {
+                Group {
+                    if vm.isProcessing {
+                        progressView
+                    } else if vm.hasResults {
+                        resultsView
+                    } else {
+                        RecorderView(vm: vm)
                     }
                 }
+                .navigationTitle("Minutes")
+                .toolbar {
+                    if vm.hasResults {
+                        ToolbarItem(placement: .primaryAction) {
+                            Button("New") { vm.reset() }
+                        }
+                        ToolbarItem(placement: .secondaryAction) {
+                            ShareLink(item: vm.exportContent)
+                        }
+                    }
+                }
             }
-            .task { await vm.checkBackend() }
+            .tabItem { Label("Record", systemImage: "mic.fill") }
+            .tag(0)
+
+            // Tab 2: Import file
+            NavigationStack {
+                Group {
+                    if vm.isProcessing {
+                        progressView
+                    } else if vm.hasResults {
+                        resultsView
+                    } else {
+                        filePickerView
+                    }
+                }
+                .navigationTitle("Minutes")
+                .toolbar {
+                    if vm.hasResults {
+                        ToolbarItem(placement: .primaryAction) {
+                            Button("New") { vm.reset() }
+                        }
+                        ToolbarItem(placement: .secondaryAction) {
+                            ShareLink(item: vm.exportContent)
+                        }
+                    }
+                }
+            }
+            .tabItem { Label("Import", systemImage: "doc.badge.plus") }
+            .tag(1)
         }
+        .task { await vm.checkBackend() }
     }
 
-    // MARK: - Landing
+    // MARK: - File Picker
 
-    private var landingView: some View {
+    @State private var showingFilePicker = false
+
+    private var filePickerView: some View {
         VStack(spacing: 24) {
             Spacer()
 
-            Image(systemName: "waveform.badge.mic")
+            Image(systemName: "doc.badge.plus")
                 .font(.system(size: 56))
                 .foregroundStyle(.secondary)
 
-            Text("Transcribe audio & video")
+            Text("Import audio or video")
                 .font(.title2)
                 .fontWeight(.medium)
 
@@ -54,7 +87,7 @@ struct IOSContentView: View {
             .padding(.horizontal, 40)
 
             Button(action: { showingFilePicker = true }) {
-                Label("Select File", systemImage: "doc.badge.plus")
+                Label("Select File", systemImage: "folder")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
                     .padding()
