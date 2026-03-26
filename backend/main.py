@@ -7,11 +7,13 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, File, Query, UploadFile
+from pydantic import BaseModel as BaseSchema
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import PlainTextResponse
 
+from backend.devonthink import save_to_devonthink
 from backend.minutes import generate_minutes
-from backend.models import HealthResponse, MinutesResult, OutputFormat, TranscribeResult
+from backend.models import BatchItem, BatchResult, HealthResponse, MinutesResult, OutputFormat, TranscribeResult
 from backend.transcriber import engine
 
 OUTPUT_DIR = Path.home() / "Documents" / "scribe-output"
@@ -115,6 +117,80 @@ async def minutes(file: UploadFile = File(...)):
         tmp_path.unlink(missing_ok=True)
 
 
+@app.post("/batch/minutes", response_model=BatchResult)
+async def batch_minutes(files: list[UploadFile] = File(...)):
+    """Process multiple files sequentially — transcribe + generate minutes for each."""
+    items: list[BatchItem] = []
+    for upload in files:
+        tmp_path = _save_upload(upload)
+        fname = upload.filename or "untitled"
+        try:
+            result = engine.transcribe(tmp_path, fmt=OutputFormat.txt)
+            mins = await generate_minutes(result.text)
+            _persist_output(fname, result.text, mins, result.duration_seconds)
+            items.append(BatchItem(
+                filename=fname, transcript=result.text, minutes=mins,
+                duration_seconds=result.duration_seconds, status="ok",
+            ))
+        except Exception as e:
+            logger.exception("Batch item failed: %s", fname)
+            items.append(BatchItem(
+                filename=fname, transcript="", minutes="",
+                duration_seconds=0, status="error", error=str(e),
+            ))
+        finally:
+            tmp_path.unlink(missing_ok=True)
+
+    completed = sum(1 for i in items if i.status == "ok")
+    return BatchResult(total=len(items), completed=completed, failed=len(items) - completed, items=items)
+
+
+@app.post("/batch/minutes/paths", response_model=BatchResult)
+async def batch_minutes_paths(paths: list[str]):
+    """Process multiple local files by path — for MCP and CLI use."""
+    items: list[BatchItem] = []
+    for p in paths:
+        file_path = Path(p)
+        if not file_path.exists():
+            items.append(BatchItem(
+                filename=file_path.name, transcript="", minutes="",
+                duration_seconds=0, status="error", error=f"File not found: {p}",
+            ))
+            continue
+        try:
+            result = engine.transcribe(file_path, fmt=OutputFormat.txt)
+            mins = await generate_minutes(result.text)
+            _persist_output(file_path.name, result.text, mins, result.duration_seconds)
+            items.append(BatchItem(
+                filename=file_path.name, transcript=result.text, minutes=mins,
+                duration_seconds=result.duration_seconds, status="ok",
+            ))
+        except Exception as e:
+            logger.exception("Batch item failed: %s", file_path.name)
+            items.append(BatchItem(
+                filename=file_path.name, transcript="", minutes="",
+                duration_seconds=0, status="error", error=str(e),
+            ))
+
+    completed = sum(1 for i in items if i.status == "ok")
+    return BatchResult(total=len(items), completed=completed, failed=len(items) - completed, items=items)
+
+
+class DevonThinkExport(BaseSchema):
+    title: str
+    content: str
+    tags: list[str] | None = None
+
+
+@app.post("/export/devonthink")
+async def export_to_devonthink_endpoint(body: DevonThinkExport):
+    """Save content to DEVONthink Meeting Minutes group (macOS only)."""
+    ok = save_to_devonthink(body.title, body.content, tags=body.tags)
+    if ok:
+        return {"status": "saved", "title": body.title}
+    return PlainTextResponse("DEVONthink save failed — check backend logs", status_code=500)
+
+
 @app.get("/output/latest")
 async def get_latest_output():
     """Get the latest transcription/minutes output (for LLMs to read)."""
@@ -178,6 +254,17 @@ MCP_TOOLS = [
         },
     },
     {
+        "name": "batch_minutes",
+        "description": "Transcribe multiple audio/video files and generate minutes for each. Processes sequentially.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "paths": {"type": "array", "items": {"type": "string"}, "description": "List of absolute file paths"},
+            },
+            "required": ["paths"],
+        },
+    },
+    {
         "name": "get_latest_output",
         "description": "Get the latest transcription/minutes output as markdown. Use this to read results after transcription completes.",
         "inputSchema": {
@@ -227,6 +314,23 @@ async def mcp_handler(request: dict):
             mins = await generate_minutes(result.text)
             _persist_output(file_path.name, result.text, mins, result.duration_seconds)
             return _mcp_result(req_id, f"# Transcript\n\n{result.text}\n\n---\n\n# Minutes\n\n{mins}")
+
+        if tool_name == "batch_minutes":
+            paths = args.get("paths", [])
+            results = []
+            for p in paths:
+                fp = Path(p)
+                if not fp.exists():
+                    results.append(f"## {fp.name}\n\nError: File not found")
+                    continue
+                try:
+                    result = engine.transcribe(fp, fmt=OutputFormat.txt)
+                    mins = await generate_minutes(result.text)
+                    _persist_output(fp.name, result.text, mins, result.duration_seconds)
+                    results.append(f"## {fp.name}\n\n{mins}")
+                except Exception as e:
+                    results.append(f"## {fp.name}\n\nError: {e}")
+            return _mcp_result(req_id, "\n\n---\n\n".join(results))
 
         if tool_name == "get_latest_output":
             latest = OUTPUT_DIR / "latest.md"

@@ -38,6 +38,19 @@ final class APIClient: Sendable {
         return try JSONDecoder().decode(MinutesResponse.self, from: data)
     }
 
+    func exportToDevonThink(title: String, content: String) async throws -> Bool {
+        let url = URL(string: "\(baseURL)/export/devonthink")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.timeoutInterval = 10
+        let body = ["title": title, "content": content]
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        let (_, response) = try await URLSession.shared.data(for: request)
+        guard let http = response as? HTTPURLResponse else { return false }
+        return http.statusCode == 200
+    }
+
     private func upload(fileURL: URL, to url: URL) async throws -> (Data, URLResponse) {
         let boundary = UUID().uuidString
         var request = URLRequest(url: url)

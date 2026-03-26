@@ -171,11 +171,14 @@ struct MacContentView: View {
                     }
                 }
                 Spacer()
+                Button("Save to DEVONthink") { saveToDevonThink() }
                 Button("Save...") { saveOutput() }
             }
             .padding()
         }
     }
+
+    @State private var dtSaved = false
 
     // MARK: - Logic
 
@@ -199,6 +202,20 @@ struct MacContentView: View {
             guard response == .OK, let url = panel.url else { return }
             Task { @MainActor in
                 await vm.processFile(url)
+            }
+        }
+    }
+
+    private func saveToDevonThink() {
+        Task {
+            do {
+                let ok = try await APIClient.shared.exportToDevonThink(
+                    title: vm.fileName,
+                    content: vm.exportContent
+                )
+                dtSaved = ok
+            } catch {
+                vm.errorMessage = "DEVONthink export failed: \(error.localizedDescription)"
             }
         }
     }

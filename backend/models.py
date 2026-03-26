@@ -34,6 +34,22 @@ class MinutesResult(BaseModel):
     duration_seconds: float
 
 
+class BatchItem(BaseModel):
+    filename: str
+    transcript: str
+    minutes: str
+    duration_seconds: float
+    status: str  # "ok" or "error"
+    error: Optional[str] = None
+
+
+class BatchResult(BaseModel):
+    total: int
+    completed: int
+    failed: int
+    items: list[BatchItem]
+
+
 class HealthResponse(BaseModel):
     status: str
     model_loaded: bool
