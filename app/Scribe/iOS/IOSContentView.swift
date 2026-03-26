@@ -144,28 +144,11 @@ struct IOSContentView: View {
 
     // MARK: - Results
 
-    private var resultsView: some View {
-        TabView {
-            ScrollView {
-                Text(vm.transcript)
-                    .font(.system(.caption, design: .monospaced))
-                    .textSelection(.enabled)
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .tabItem { Label("Transcript", systemImage: "text.alignleft") }
+    @State private var resultTab = 0
 
-            if !vm.minutes.isEmpty {
-                ScrollView {
-                    Text(vm.minutes)
-                        .textSelection(.enabled)
-                        .padding()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .tabItem { Label("Minutes", systemImage: "doc.text") }
-            }
-        }
-        .safeAreaInset(edge: .top) {
+    private var resultsView: some View {
+        VStack(spacing: 0) {
+            // Header
             HStack {
                 VStack(alignment: .leading) {
                     Text(vm.fileName).font(.caption).fontWeight(.medium)
@@ -174,8 +157,36 @@ struct IOSContentView: View {
                 Spacer()
             }
             .padding(.horizontal)
-            .padding(.vertical, 6)
-            .background(.ultraThinMaterial)
+            .padding(.vertical, 8)
+
+            // Segmented picker instead of nested TabView
+            if !vm.minutes.isEmpty {
+                Picker("View", selection: $resultTab) {
+                    Text("Minutes").tag(0)
+                    Text("Transcript").tag(1)
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal)
+                .padding(.bottom, 8)
+            }
+
+            Divider()
+
+            // Content
+            ScrollView {
+                if resultTab == 0 && !vm.minutes.isEmpty {
+                    Text(vm.minutes)
+                        .textSelection(.enabled)
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                } else {
+                    Text(vm.transcript)
+                        .font(.system(.caption, design: .monospaced))
+                        .textSelection(.enabled)
+                        .padding()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
         }
     }
 }
