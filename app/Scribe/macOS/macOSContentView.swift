@@ -34,6 +34,10 @@ struct MacContentView: View {
                     .font(.title2)
                     .fontWeight(.medium)
 
+                Text("or use File → Open (Cmd+O)")
+                    .font(.caption)
+                    .foregroundStyle(.tertiary)
+
                 Text("Supports MP4, M4A, MP3, WAV, WebM, and more")
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -46,6 +50,11 @@ struct MacContentView: View {
             }
             .pickerStyle(.segmented)
             .frame(width: 300)
+
+            Button(action: openFile) {
+                Label("Open File", systemImage: "folder")
+            }
+            .controlSize(.large)
 
             if !vm.backendReady {
                 Label("Backend not running — start with: python3 -m backend.main", systemImage: "exclamationmark.triangle")
@@ -85,6 +94,9 @@ struct MacContentView: View {
             Text(vm.fileName)
                 .font(.caption)
                 .foregroundStyle(.secondary)
+            Text("This may take a few minutes for long recordings")
+                .font(.caption2)
+                .foregroundStyle(.tertiary)
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -176,6 +188,19 @@ struct MacContentView: View {
             }
         }
         return true
+    }
+
+    private func openFile() {
+        let panel = NSOpenPanel()
+        panel.allowedContentTypes = [.audio, .audiovisualContent]
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        panel.begin { response in
+            guard response == .OK, let url = panel.url else { return }
+            Task { @MainActor in
+                await vm.processFile(url)
+            }
+        }
     }
 
     private func saveOutput() {

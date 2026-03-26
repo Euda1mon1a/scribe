@@ -20,8 +20,32 @@ struct ScribeApp: App {
         #if os(macOS)
         .windowStyle(.titleBar)
         .defaultSize(width: 900, height: 700)
+        .commands {
+            CommandGroup(after: .newItem) {
+                Button("Open Audio/Video...") {
+                    openFile()
+                }
+                .keyboardShortcut("o", modifiers: .command)
+            }
+        }
         #endif
     }
+
+    #if os(macOS)
+    private func openFile() {
+        let panel = NSOpenPanel()
+        panel.allowedContentTypes = [.audio, .audiovisualContent]
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        panel.message = "Select an audio or video file to transcribe"
+        panel.begin { response in
+            guard response == .OK, let url = panel.url else { return }
+            Task {
+                await viewModel.processFile(url)
+            }
+        }
+    }
+    #endif
 
     #if os(iOS)
     private func handleSharedAudio() {

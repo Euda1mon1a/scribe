@@ -45,7 +45,7 @@ final class ScribeViewModel {
                 duration = result.durationSeconds
 
             case .minutes:
-                processingStatus = "Transcribing..."
+                processingStatus = "Transcribing audio..."
                 let result = try await APIClient.shared.generateMinutes(fileURL: url)
                 transcript = result.transcript
                 minutes = result.minutes
