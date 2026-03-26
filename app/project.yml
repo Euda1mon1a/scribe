@@ -1,0 +1,48 @@
+name: Scribe
+options:
+  bundleIdPrefix: com.aaronmontgomery
+  deploymentTarget:
+    iOS: "17.0"
+    macOS: "15.0"
+  xcodeVersion: "16.0"
+  groupSortPosition: top
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    DEVELOPMENT_TEAM: ""
+
+targets:
+  Scribe:
+    type: application
+    platform: [iOS, macOS]
+    sources:
+      - path: Scribe/Shared
+      - path: Scribe/macOS
+      - path: Scribe/iOS
+    info:
+      path: Scribe/Info.plist
+    entitlements:
+      path: Scribe/Scribe.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.aaronmontgomery.scribe
+        INFOPLIST_FILE: Scribe/Info.plist
+        TARGETED_DEVICE_FAMILY: "1,2,6"
+
+  ScribeShare:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: ScribeShare
+    info:
+      path: ScribeShare/Info.plist
+    entitlements:
+      path: ScribeShare/ScribeShare.entitlements
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.aaronmontgomery.scribe.share
+        INFOPLIST_FILE: ScribeShare/Info.plist
+        TARGETED_DEVICE_FAMILY: "1,2"
+    dependencies:
+      - target: Scribe_iOS

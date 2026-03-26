@@ -11,7 +11,8 @@ let package = Package(
         .executableTarget(
             name: "Scribe",
             path: "Scribe",
-            sources: ["Shared", "macOS", "iOS"]
+            sources: ["Shared", "macOS", "iOS"],
+            resources: [.copy("Info.plist")]
         ),
     ]
 )

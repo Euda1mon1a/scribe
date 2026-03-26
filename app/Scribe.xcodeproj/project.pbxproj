@@ -1,0 +1,521 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		031688E13720DD5EFCAE50BC /* IOSContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC079990DDA17586238E0C43 /* IOSContentView.swift */; };
+		136092638E3E35EBF5AE8069 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0960E0D6804A0EAF608464D7 /* Models.swift */; };
+		22824D274F3634042207855F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0960E0D6804A0EAF608464D7 /* Models.swift */; };
+		487E8458E43552D3146A0A15 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43B9C187E345C6237DE57D9 /* ShareViewController.swift */; };
+		7D8CB6A179C8F1DE98727BFD /* ScribeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CB55F742FC802082AE2041 /* ScribeApp.swift */; };
+		7F3D08EB41100BB37BFE75B4 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55406EF750E3C348072B7AB4 /* APIClient.swift */; };
+		B05E58C476E25EA9F7577E19 /* ScribeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0F13A2B885D81D29BD8A99 /* ScribeViewModel.swift */; };
+		B4AE3B462E37787847C54BAA /* macOSContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FBCB7BBC5A2E7DDB00750C /* macOSContentView.swift */; };
+		C5B4AD9161604B871B5FDAEA /* macOSContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FBCB7BBC5A2E7DDB00750C /* macOSContentView.swift */; };
+		C5CE74B92AF5A405A08B15A1 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55406EF750E3C348072B7AB4 /* APIClient.swift */; };
+		E3B5BAEA7A3C3EA6A8D61E17 /* ScribeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0F13A2B885D81D29BD8A99 /* ScribeViewModel.swift */; };
+		EEE0D2747B018E771AE67A26 /* ScribeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CB55F742FC802082AE2041 /* ScribeApp.swift */; };
+		F06186F122FBE52DD055464C /* IOSContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC079990DDA17586238E0C43 /* IOSContentView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7B39B92D040876FB5BEBC2FB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0911AD40AB20891FC5ABBE8B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 59041964DF6CD642B292FC72;
+			remoteInfo = Scribe_iOS;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0960E0D6804A0EAF608464D7 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		320A98E7A0C187D6246D1519 /* ScribeShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScribeShare.entitlements; sourceTree = "<group>"; };
+		3A73CFA9CBB2BE1FB1D29F89 /* Scribe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		55406EF750E3C348072B7AB4 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		5E663062C019F8AC1FAFAF07 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8D0F13A2B885D81D29BD8A99 /* ScribeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScribeViewModel.swift; sourceTree = "<group>"; };
+		AC079990DDA17586238E0C43 /* IOSContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IOSContentView.swift; sourceTree = "<group>"; };
+		C43B9C187E345C6237DE57D9 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		D3FBCB7BBC5A2E7DDB00750C /* macOSContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOSContentView.swift; sourceTree = "<group>"; };
+		DE246E28133B04B7C135A5A9 /* ScribeShare.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = ScribeShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF5D9EE281DE7498F40A1807 /* Scribe.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Scribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3CB55F742FC802082AE2041 /* ScribeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScribeApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		43C01C6B2C61C5B8BD3A4CD2 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				AC079990DDA17586238E0C43 /* IOSContentView.swift */,
+			);
+			name = iOS;
+			path = Scribe/iOS;
+			sourceTree = "<group>";
+		};
+		637CC253C48F5DA69FAD3A59 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EF5D9EE281DE7498F40A1807 /* Scribe.app */,
+				3A73CFA9CBB2BE1FB1D29F89 /* Scribe.app */,
+				DE246E28133B04B7C135A5A9 /* ScribeShare.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7A8263A3DE4863D7D12D4F04 /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				D3FBCB7BBC5A2E7DDB00750C /* macOSContentView.swift */,
+			);
+			name = macOS;
+			path = Scribe/macOS;
+			sourceTree = "<group>";
+		};
+		8B1756E8C235D61E741A9BDF /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				55406EF750E3C348072B7AB4 /* APIClient.swift */,
+				0960E0D6804A0EAF608464D7 /* Models.swift */,
+				F3CB55F742FC802082AE2041 /* ScribeApp.swift */,
+				8D0F13A2B885D81D29BD8A99 /* ScribeViewModel.swift */,
+			);
+			name = Shared;
+			path = Scribe/Shared;
+			sourceTree = "<group>";
+		};
+		CF1A6569B97AB964E08BAAEC = {
+			isa = PBXGroup;
+			children = (
+				43C01C6B2C61C5B8BD3A4CD2 /* iOS */,
+				7A8263A3DE4863D7D12D4F04 /* macOS */,
+				E441183934EFF190546673C7 /* ScribeShare */,
+				8B1756E8C235D61E741A9BDF /* Shared */,
+				637CC253C48F5DA69FAD3A59 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		E441183934EFF190546673C7 /* ScribeShare */ = {
+			isa = PBXGroup;
+			children = (
+				5E663062C019F8AC1FAFAF07 /* Info.plist */,
+				320A98E7A0C187D6246D1519 /* ScribeShare.entitlements */,
+				C43B9C187E345C6237DE57D9 /* ShareViewController.swift */,
+			);
+			path = ScribeShare;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		52E3B6E2DB0D570FC67E4326 /* Scribe_macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C3D09B44CB09C7ED2137F6D5 /* Build configuration list for PBXNativeTarget "Scribe_macOS" */;
+			buildPhases = (
+				B961F4D4AEA10528E4DE476E /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Scribe_macOS;
+			packageProductDependencies = (
+			);
+			productName = Scribe_macOS;
+			productReference = 3A73CFA9CBB2BE1FB1D29F89 /* Scribe.app */;
+			productType = "com.apple.product-type.application";
+		};
+		59041964DF6CD642B292FC72 /* Scribe_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 61F7B4702797106E30278BFA /* Build configuration list for PBXNativeTarget "Scribe_iOS" */;
+			buildPhases = (
+				66B838A6E92F536DB1A4ADD5 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Scribe_iOS;
+			packageProductDependencies = (
+			);
+			productName = Scribe_iOS;
+			productReference = EF5D9EE281DE7498F40A1807 /* Scribe.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F29FE6AD005808958C6B35AD /* ScribeShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4638471ACA327A7E57AF9F1D /* Build configuration list for PBXNativeTarget "ScribeShare" */;
+			buildPhases = (
+				2E68C42AAAB48CB8C78C843E /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				025B4EE676151F0868648099 /* PBXTargetDependency */,
+			);
+			name = ScribeShare;
+			packageProductDependencies = (
+			);
+			productName = ScribeShare;
+			productReference = DE246E28133B04B7C135A5A9 /* ScribeShare.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0911AD40AB20891FC5ABBE8B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					52E3B6E2DB0D570FC67E4326 = {
+						DevelopmentTeam = "";
+					};
+					59041964DF6CD642B292FC72 = {
+						DevelopmentTeam = "";
+					};
+					F29FE6AD005808958C6B35AD = {
+						DevelopmentTeam = "";
+					};
+				};
+			};
+			buildConfigurationList = 9E4712121E5F29BBE87574A2 /* Build configuration list for PBXProject "Scribe" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = CF1A6569B97AB964E08BAAEC;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 637CC253C48F5DA69FAD3A59 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F29FE6AD005808958C6B35AD /* ScribeShare */,
+				59041964DF6CD642B292FC72 /* Scribe_iOS */,
+				52E3B6E2DB0D570FC67E4326 /* Scribe_macOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2E68C42AAAB48CB8C78C843E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				487E8458E43552D3146A0A15 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66B838A6E92F536DB1A4ADD5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F3D08EB41100BB37BFE75B4 /* APIClient.swift in Sources */,
+				F06186F122FBE52DD055464C /* IOSContentView.swift in Sources */,
+				22824D274F3634042207855F /* Models.swift in Sources */,
+				7D8CB6A179C8F1DE98727BFD /* ScribeApp.swift in Sources */,
+				B05E58C476E25EA9F7577E19 /* ScribeViewModel.swift in Sources */,
+				B4AE3B462E37787847C54BAA /* macOSContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B961F4D4AEA10528E4DE476E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5CE74B92AF5A405A08B15A1 /* APIClient.swift in Sources */,
+				031688E13720DD5EFCAE50BC /* IOSContentView.swift in Sources */,
+				136092638E3E35EBF5AE8069 /* Models.swift in Sources */,
+				EEE0D2747B018E771AE67A26 /* ScribeApp.swift in Sources */,
+				E3B5BAEA7A3C3EA6A8D61E17 /* ScribeViewModel.swift in Sources */,
+				C5B4AD9161604B871B5FDAEA /* macOSContentView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		025B4EE676151F0868648099 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 59041964DF6CD642B292FC72 /* Scribe_iOS */;
+			targetProxy = 7B39B92D040876FB5BEBC2FB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		24111DF676CEE3A8D7AE9BDE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Scribe/Scribe.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Scribe/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmontgomery.scribe;
+				PRODUCT_NAME = Scribe;
+				SDKROOT = macosx;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Debug;
+		};
+		32BA646553E5A6F63E3D7C2A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ScribeShare/ScribeShare.entitlements;
+				INFOPLIST_FILE = ScribeShare/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmontgomery.scribe.share;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6B8A49D343AA2B5ED68C08AE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Scribe/Scribe.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Scribe/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmontgomery.scribe;
+				PRODUCT_NAME = Scribe;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Release;
+		};
+		9F8A1B8A75D17DD51FD97E84 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		A7734ADE561C375D5F93F7CF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		D4A4595A6B062EA43257D5CB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Scribe/Scribe.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = Scribe/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmontgomery.scribe;
+				PRODUCT_NAME = Scribe;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Debug;
+		};
+		DB5087084768784191DE1599 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ScribeShare/ScribeShare.entitlements;
+				INFOPLIST_FILE = ScribeShare/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmontgomery.scribe.share;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		DDACC390532480B535C1E315 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Scribe/Scribe.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Scribe/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.aaronmontgomery.scribe;
+				PRODUCT_NAME = Scribe;
+				SDKROOT = macosx;
+				TARGETED_DEVICE_FAMILY = "1,2,6";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4638471ACA327A7E57AF9F1D /* Build configuration list for PBXNativeTarget "ScribeShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				32BA646553E5A6F63E3D7C2A /* Debug */,
+				DB5087084768784191DE1599 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		61F7B4702797106E30278BFA /* Build configuration list for PBXNativeTarget "Scribe_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D4A4595A6B062EA43257D5CB /* Debug */,
+				6B8A49D343AA2B5ED68C08AE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9E4712121E5F29BBE87574A2 /* Build configuration list for PBXProject "Scribe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F8A1B8A75D17DD51FD97E84 /* Debug */,
+				A7734ADE561C375D5F93F7CF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C3D09B44CB09C7ED2137F6D5 /* Build configuration list for PBXNativeTarget "Scribe_macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				24111DF676CEE3A8D7AE9BDE /* Debug */,
+				DDACC390532480B535C1E315 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0911AD40AB20891FC5ABBE8B /* Project object */;
+}
