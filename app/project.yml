@@ -20,6 +20,7 @@ targets:
       - path: Scribe/Shared
       - path: Scribe/macOS
       - path: Scribe/iOS
+      - path: Scribe/Assets.xcassets
     info:
       path: Scribe/Info.plist
     entitlements:
@@ -29,6 +30,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.aaronmontgomery.scribe
         INFOPLIST_FILE: Scribe/Info.plist
         TARGETED_DEVICE_FAMILY: "1,2,6"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
 
   ScribeShare:
     type: app-extension

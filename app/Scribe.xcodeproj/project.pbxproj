@@ -11,8 +11,10 @@
 		136092638E3E35EBF5AE8069 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0960E0D6804A0EAF608464D7 /* Models.swift */; };
 		22824D274F3634042207855F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0960E0D6804A0EAF608464D7 /* Models.swift */; };
 		487E8458E43552D3146A0A15 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43B9C187E345C6237DE57D9 /* ShareViewController.swift */; };
+		77D2A2A9AACDFB67348561D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D9B56D3A82F894C60EF067C /* Assets.xcassets */; };
 		7D8CB6A179C8F1DE98727BFD /* ScribeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3CB55F742FC802082AE2041 /* ScribeApp.swift */; };
 		7F3D08EB41100BB37BFE75B4 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55406EF750E3C348072B7AB4 /* APIClient.swift */; };
+		9F35F27004501BDBF583AC16 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D9B56D3A82F894C60EF067C /* Assets.xcassets */; };
 		B05E58C476E25EA9F7577E19 /* ScribeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D0F13A2B885D81D29BD8A99 /* ScribeViewModel.swift */; };
 		B4AE3B462E37787847C54BAA /* macOSContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FBCB7BBC5A2E7DDB00750C /* macOSContentView.swift */; };
 		C5B4AD9161604B871B5FDAEA /* macOSContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FBCB7BBC5A2E7DDB00750C /* macOSContentView.swift */; };
@@ -34,6 +36,7 @@
 
 /* Begin PBXFileReference section */
 		0960E0D6804A0EAF608464D7 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		0D9B56D3A82F894C60EF067C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		320A98E7A0C187D6246D1519 /* ScribeShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ScribeShare.entitlements; sourceTree = "<group>"; };
 		3A73CFA9CBB2BE1FB1D29F89 /* Scribe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55406EF750E3C348072B7AB4 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
@@ -88,11 +91,20 @@
 			path = Scribe/Shared;
 			sourceTree = "<group>";
 		};
+		CE0A276A257FD1674B6227E6 /* Scribe */ = {
+			isa = PBXGroup;
+			children = (
+				0D9B56D3A82F894C60EF067C /* Assets.xcassets */,
+			);
+			path = Scribe;
+			sourceTree = "<group>";
+		};
 		CF1A6569B97AB964E08BAAEC = {
 			isa = PBXGroup;
 			children = (
 				43C01C6B2C61C5B8BD3A4CD2 /* iOS */,
 				7A8263A3DE4863D7D12D4F04 /* macOS */,
+				CE0A276A257FD1674B6227E6 /* Scribe */,
 				E441183934EFF190546673C7 /* ScribeShare */,
 				8B1756E8C235D61E741A9BDF /* Shared */,
 				637CC253C48F5DA69FAD3A59 /* Products */,
@@ -117,6 +129,7 @@
 			buildConfigurationList = C3D09B44CB09C7ED2137F6D5 /* Build configuration list for PBXNativeTarget "Scribe_macOS" */;
 			buildPhases = (
 				B961F4D4AEA10528E4DE476E /* Sources */,
+				41E0BF4E14EA25C256878037 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -134,6 +147,7 @@
 			buildConfigurationList = 61F7B4702797106E30278BFA /* Build configuration list for PBXNativeTarget "Scribe_iOS" */;
 			buildPhases = (
 				66B838A6E92F536DB1A4ADD5 /* Sources */,
+				46E26F8354C685506A4D37B0 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -204,6 +218,25 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		41E0BF4E14EA25C256878037 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F35F27004501BDBF583AC16 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		46E26F8354C685506A4D37B0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				77D2A2A9AACDFB67348561D3 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2E68C42AAAB48CB8C78C843E /* Sources */ = {
