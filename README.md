@@ -102,9 +102,36 @@ scribe
 
 ## MCP Integration
 
-LLM tools (Claude Code, etc.) can transcribe files directly.
+The backend exposes an MCP server at `/mcp`, so any AI coding tool can transcribe files and generate minutes as tool calls. This means you can say "transcribe ~/Downloads/meeting.m4a" in your terminal and get results back inline.
 
-Add to your MCP config:
+### Claude Code
+
+Add to `~/.claude.json` under `mcpServers`:
+```json
+"scribe": {
+  "type": "http",
+  "url": "http://127.0.0.1:8890/mcp"
+}
+```
+
+Then in Claude Code: *"transcribe this file"* or *"generate minutes for ~/recordings/standup.m4a"* — Claude will call the MCP tools directly.
+
+### Gemini CLI
+
+Add to `~/.gemini/settings.json`:
+```json
+{
+  "mcpServers": {
+    "scribe": {
+      "httpUrl": "http://127.0.0.1:8890/mcp"
+    }
+  }
+}
+```
+
+### ChatGPT (Codex CLI)
+
+Codex supports MCP servers via its config. Add to your Codex MCP config:
 ```json
 {
   "scribe": {
@@ -114,11 +141,23 @@ Add to your MCP config:
 }
 ```
 
-**Tools:**
+### Any MCP Client
+
+The server implements MCP 2024-11-05 over HTTP POST. Point any MCP-compatible client at `http://127.0.0.1:8890/mcp`.
+
+**Available tools:**
 - `transcribe_file(path, format)` — speech-to-text (txt, srt, vtt, json)
 - `generate_minutes(path)` — transcript + structured minutes
 - `batch_minutes(paths)` — process multiple files
 - `get_latest_output()` — read the most recent result
+
+## Vibe Coding Setup
+
+If you're using an AI assistant to get this running, here's what to tell it:
+
+> Install and start the Scribe backend: `pip install scribe-minutes && scribe`. Then add an MCP server called "scribe" pointing at `http://127.0.0.1:8890/mcp`. If I want meeting minutes, I also need a local LLM — install Ollama, pull a model like `qwen2.5:32b`, and set `SCRIBE_LLM_URL=http://127.0.0.1:11434/v1/chat/completions` before starting scribe.
+
+That's the whole setup. Your AI assistant can handle the rest — it'll have access to the transcribe and minutes tools once the MCP server is configured.
 
 ## API
 
