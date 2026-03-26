@@ -49,7 +49,7 @@
 		C43B9C187E345C6237DE57D9 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		D3FBCB7BBC5A2E7DDB00750C /* macOSContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOSContentView.swift; sourceTree = "<group>"; };
 		DE246E28133B04B7C135A5A9 /* ScribeShare.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = ScribeShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		EF5D9EE281DE7498F40A1807 /* Scribe.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Scribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EF5D9EE281DE7498F40A1807 /* Scribe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Scribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3CB55F742FC802082AE2041 /* ScribeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScribeApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -194,9 +194,6 @@
 					52E3B6E2DB0D570FC67E4326 = {
 						DevelopmentTeam = "";
 					};
-					59041964DF6CD642B292FC72 = {
-						DevelopmentTeam = "";
-					};
 					F29FE6AD005808958C6B35AD = {
 						DevelopmentTeam = "";
 					};
@@ -330,6 +327,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Scribe/Scribe.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = ST6C8ZLY3C;
 				INFOPLIST_FILE = Scribe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -469,6 +467,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Scribe/Scribe.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = ST6C8ZLY3C;
 				INFOPLIST_FILE = Scribe/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
