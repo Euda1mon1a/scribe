@@ -80,7 +80,7 @@ struct IOSContentView: View {
         }
         .fileImporter(
             isPresented: $showingFilePicker,
-            allowedContentTypes: [.audio, .movie, .mpeg4Movie, .mp3, .wav],
+            allowedContentTypes: [.audio, .audiovisualContent],
             allowsMultipleSelection: false
         ) { result in
             if case .success(let urls) = result, let url = urls.first {
